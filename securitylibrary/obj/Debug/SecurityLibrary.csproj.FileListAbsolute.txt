@@ -17,3 +17,4 @@ E:\My Study\Study 4th Year\Second Semster\Computer security\SecurityPackage\Secu
 E:\My Study\Study 4th Year\Second Semster\Computer security\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
 E:\My Study\Study 4th Year\Second Semster\Computer security\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 E:\My Study\Study 4th Year\Second Semster\Computer security\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
+E:\My Study\Study 4th Year\Second Semster\Computer security\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.AssemblyReference.cache
