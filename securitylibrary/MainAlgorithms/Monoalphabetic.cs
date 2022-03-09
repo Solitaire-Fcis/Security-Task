@@ -10,7 +10,57 @@ namespace SecurityLibrary
     {
         public string Analyse(string plainText, string cipherText)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            cipherText=cipherText.ToLower();
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            int founder = 0;
+            char[] key = new char[26];
+            bool found = false;
+            for (int i = 0; i < plainText.Length; i++)
+            {
+                for (int j = 0; j < alphabet.Length; j++)
+                {
+                    if (plainText[i]==alphabet[j])
+                    {
+                        key[j] = cipherText[i];
+                        break;
+                    }
+                }
+            }
+            for (int i = 0; i < alphabet.Length; i++)
+            {
+                for (int j = 0; j < key.Length; j++)
+                {
+                    if (alphabet[i]==key[j])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    //key[i]=alphabet[i]
+                    if (key[i]!=0)
+                    {
+                        for (int j = 0; j < key.Length; j++)
+                        {
+                            if (key[j]==0)
+                            {
+                                founder = j;
+                                break;
+                            }
+                        }
+                        key[founder] = alphabet[i];
+                    }
+                    else
+                    {
+                        key[i] = alphabet[i];
+                    }
+                }
+                found = false;
+            }
+            string returnedKey = new string(key);
+            return returnedKey;
         }
 
         public string Decrypt(string cipherText, string key)

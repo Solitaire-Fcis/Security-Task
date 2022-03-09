@@ -11,7 +11,7 @@ namespace SecurityPackageTest
     public class MonoalphabeticTest
     {
         string mainPlain = "meetmeafterthetogaparty";
-        string mainCipher = "phhwphdiwhuwkhwrjdsduwb".ToUpper();
+        string mainCipher ="phhwphdiwhuwkhwrjdsduwb".ToUpper();
         string mainKey = "defghijklmnopqrstuvwxyzabc";
 
 
