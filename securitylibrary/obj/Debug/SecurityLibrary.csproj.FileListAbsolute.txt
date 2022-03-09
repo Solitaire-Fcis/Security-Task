@@ -24,3 +24,9 @@ E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\Securi
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\bin\Debug\SecurityLibrary.dll
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\bin\Debug\SecurityLibrary.pdb
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.AssemblyReference.cache
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.dll
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.pdb

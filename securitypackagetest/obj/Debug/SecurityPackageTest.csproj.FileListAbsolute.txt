@@ -44,3 +44,12 @@ E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\Securi
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.CopyComplete
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.dll
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.pdb
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityPackageTest\bin\Debug\SecurityPackageTest.dll
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityPackageTest\bin\Debug\SecurityPackageTest.pdb
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityPackageTest\bin\Debug\SecurityLibrary.dll
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityPackageTest\bin\Debug\SecurityLibrary.pdb
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.AssemblyReference.cache
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.CoreCompileInputs.cache
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.CopyComplete
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.dll
+E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.pdb
