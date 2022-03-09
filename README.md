@@ -3,5 +3,5 @@
 ## TO-DO-LIST
 
 - [x] Ceaser cipher
-- [ ] Monoalphabetic cipher
+- [x] Monoalphabetic cipher
 - [x] Playfair cipher
