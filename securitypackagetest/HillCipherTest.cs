@@ -54,10 +54,13 @@ namespace SecurityPackageTest
             List<int> cipher2 = algorithm.Encrypt(plain, key);
             for (int i = 0; i < cipher.Count; i++)
             {
+                Console.WriteLine(cipher[i]);
+                Console.WriteLine(cipher2[i]);
+
                 Assert.AreEqual(cipher[i], cipher2[i]);
             }
         }
-
+        
         [TestMethod]
         public void HillCipherTestDec2()
         {
@@ -143,7 +146,7 @@ namespace SecurityPackageTest
         }
 
         #endregion
-
+        /*
         #region string test cases [Bonus]
 
         [Ignore]
@@ -246,7 +249,7 @@ namespace SecurityPackageTest
         }
 
         #endregion
-
+        */
         #region error test cases (key with no inverse) 
 
         [TestMethod]
@@ -269,7 +272,7 @@ namespace SecurityPackageTest
         }
 
         #endregion
-
+        /*
         #region error test cases (key with no inverse) [Bonus]
 
         [Ignore]
@@ -292,6 +295,8 @@ namespace SecurityPackageTest
             Assert.IsTrue(key.Equals(keyS3, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        #endregion        
+        #endregion      
+        */
     }
 }
+

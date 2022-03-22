@@ -30,3 +30,9 @@ E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\ob
 E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
 E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 E:\My Study\Study 4th Year\Second Semster\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
+D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\bin\Debug\SecurityLibrary.dll
+D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\bin\Debug\SecurityLibrary.pdb
+D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.AssemblyReference.cache
+D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
+D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.dll
+D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
