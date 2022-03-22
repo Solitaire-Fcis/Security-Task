@@ -5,7 +5,7 @@
 - [x] Ceaser cipher
 - [x] Monoalphabetic cipher
 - [x] Playfair cipher
-- [ ] Coulmnar cipher
+- [x] Coulmnar cipher
 - [ ] HillCipher
-- [ ] RailFence cipher
+- [x] RailFence cipher
 - [ ] Vignere cipher
