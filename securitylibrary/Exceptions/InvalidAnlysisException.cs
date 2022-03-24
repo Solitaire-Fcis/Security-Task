@@ -8,5 +8,9 @@ namespace SecurityLibrary
 {
    public class InvalidAnlysisException : Exception
     {
+        public InvalidAnlysisException() :
+            base("Invalid Key.")
+        {
+        }
     }
 }

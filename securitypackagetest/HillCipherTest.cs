@@ -295,8 +295,7 @@ namespace SecurityPackageTest
             Assert.IsTrue(key.Equals(keyS3, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        #endregion      
-        */
+        #endregion*/ 
     }
 }
 

@@ -21,7 +21,7 @@ namespace SecurityLibrary
             return list;
         }
 
-        private int[,] ConvertkeyToMatrix(List<int> key)
+        private int[,] ConvertListToMatrix(List<int> key)
         {
             int[,] keyMatrix;
             int count;
@@ -37,17 +37,23 @@ namespace SecurityLibrary
                         count++;
                     }
                 }
-                return keyMatrix;
             }
-            keyMatrix = new int[3, 3];
-            count = 0;
-            for (int x = 0; x < 3; x++)
+            else if (key.Count % 3 == 0)
             {
-                for (int y = 0; y < 3; y++)
+                keyMatrix = new int[3, 3];
+                count = 0;
+                for (int x = 0; x < 3; x++)
                 {
-                    keyMatrix[x, y] = key[count];
-                    count++;
+                    for (int y = 0; y < 3; y++)
+                    {
+                        keyMatrix[x, y] = key[count];
+                        count++;
+                    }
                 }
+            }
+            else
+            {
+                keyMatrix = new int[3, 2];
             }
             return keyMatrix;
         }
@@ -115,27 +121,52 @@ namespace SecurityLibrary
             flip[1, 0] = 0 - matrix[1, 0];
             return flip;
         }
-    
 
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
-            throw new NotImplementedException();
-            List
-        }
+            List<int> key = new List<int>();
 
+            for (int index = 0, count=2; index < 2; index++, count+=2)
+            {
+                for (int result1 = 0; result1 < 26; result1++)
+                {
+                    for (int result2 = 0; result2 < 26; result2++)
+                    {
+                        if (((result1 * plainText[0]) + (result2 * plainText[1])) % 26 == cipherText[index] &&
+                            ((result1 * plainText[2]) + (result2 * plainText[3])) % 26 == cipherText[index+2])
+                        {
+                            key.Add(result1);
+                            key.Add(result2);
+                            break;
+                        }
+                    }
+                    if (key.Count == count)
+                        break;
+                }
+            }
+
+            if (key.Count < 4)
+                throw new InvalidAnlysisException();
+
+            return key;
+
+
+        }
 
         public List<int> Decrypt(List<int> cipherText, List<int> key)
         {
             List<int> plainText = new List<int>();
-            int[,] keyMatrix = this.ConvertkeyToMatrix(key);
+            int[,] keyMatrix = this.ConvertListToMatrix(key);
             int det = this.Mod(this.Determinent(keyMatrix), 26);
             int[,] keyMatrixInverse = new int[keyMatrix.GetLength(0), keyMatrix.GetLength(1)];
             List<int> keyInverse = new List<int>();
 
+            if (keyMatrix.GetLength(0) != keyMatrix.GetLength(1))
+                throw new System.Exception();
+
             if (keyMatrix.GetLength(0) == 3)
             {
                 int b = this.FindB(det);
-
 
                 for (int i = 0; i < keyMatrix.GetLength(0); i++)
                 {
@@ -158,7 +189,7 @@ namespace SecurityLibrary
                     }
                 }
             }
-            else
+            else if (keyMatrix.GetLength(0) == 2)
             {
                 det = this.Determinent(keyMatrix);
                 int[,] flipMatrix = this.flip2x2Matrix(keyMatrix);
@@ -180,9 +211,8 @@ namespace SecurityLibrary
                         plainText.Add(((keyInverse[i] * cipherText[k]) + (keyInverse[i + 1] * cipherText[k + 1])) % 26);
                     }
                 }
-
-
             }
+
             return plainText;
         }
 
@@ -219,7 +249,36 @@ namespace SecurityLibrary
 
         public List<int> Analyse3By3Key(List<int> plainText, List<int> cipherText)
         {
-            throw new NotImplementedException();
+            List<int> key = new List<int>();
+
+            for (int index = 0, count = 3; index<3; index++, count+=3)
+            {
+                for (int result1 = 0; result1 < 26; result1++)
+                {
+                    for (int result2 = 0; result2 < 26; result2++)
+                    {
+                        for (int result3 = 0; result3 < 26; result3++)
+                        {
+                           if (((result1 * plainText[0]) + (result2 * plainText[1]) + (result3 * plainText[2])) % 26 == cipherText[index] &&
+                               ((result1 * plainText[3]) + (result2 * plainText[4]) + (result3 * plainText[5])) % 26 == cipherText[index+3] &&
+                               ((result1 * plainText[6]) + (result2 * plainText[7]) + (result3 * plainText[8])) % 26 == cipherText[index+6])
+                            {
+                                key.Add(result1);
+                                key.Add(result2);
+                                key.Add(result3);
+                                break;
+                            }
+                        }
+                        if (key.Count == count)
+                            break;
+                    }
+                    if (key.Count == count)
+                        break;
+                }
+            }
+            return key;
+
+
         }
 
     }
