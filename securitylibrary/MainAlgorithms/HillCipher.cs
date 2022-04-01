@@ -212,7 +212,8 @@ namespace SecurityLibrary
                     }
                 }
             }
-
+            if (plainText.FindAll(s => s.Equals(0)).Count == plainText.Count)
+                throw new System.Exception();
             return plainText;
         }
 

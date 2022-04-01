@@ -10,74 +10,73 @@ namespace SecurityLibrary
     {
         public List<int> Analyse(string plainText, string cipherText)
         {
+            plainText = plainText.ToLower();
             cipherText = cipherText.ToLower();
-            char f = cipherText[0];
-            char s = cipherText[1];
-            int num1=0;
-            int diff = 0;
-            for (int i = 0; i < plainText.Length; i++)
+            List<List<char>> keyMatrix = new List<List<char>>();
+            int col = 0, row = 0, counter = 0, found = 0, counter2 = 1;
+            if (cipherText[0] == plainText[0])
             {
-                if (f==plainText[i])
+                for (int i = 1; i < plainText.Length; i++)
                 {
-                    num1 = i;
-                }
-            }
-            for (int i = 0; i < plainText.Length; i++)
-            {
-                if (s == plainText[i] && Math.Abs(num1 - i) > 2)
-                {
-                    diff = i;
-                }
-            }
-            int coulmns = Math.Abs(diff - num1);
-            double tmp = (double)plainText.Length / (double)coulmns;
-            int rows = (int)Math.Ceiling(tmp);
-            char[,] pt = new char[rows, coulmns];
-            char[,] pt2 = new char[rows, coulmns];
-            int current_row = 0;
-            int current_coulmn = 0;
-            for (int i = 0; i < plainText.Length; i++)
-            {
-                pt[current_row, current_coulmn] = plainText[i];
-                pt2[current_row, current_coulmn] = cipherText[i];
-                if (current_coulmn == coulmns - 1)
-                {
-                    current_coulmn = 0;
-                    current_row++;
-
-                }
-
-                else
-                {
-                    current_coulmn++;
-                }
-            }
-            current_coulmn = 0;
-            current_row = 0;
-            List<int> key = new List<int>(coulmns);
-            bool flag = true;
-            for (int i = 0; i < coulmns; i++)
-            {
-                for (int j = 0; j < coulmns; j++)
-                {
-
-
-                    for (int k = 0; k < rows; k++)
+                    if (plainText[i] == cipherText[1])
                     {
-                        if (pt[k, i] != pt2[k, j])
+                        col = i;
+                        row = (int)Math.Round((Convert.ToDouble(plainText.Length) / Convert.ToDouble(col)));
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for(int i = 1;i < plainText.Length;i++)
+                {
+                    if(cipherText[0] == plainText[i])
+                    {
+                        if (cipherText[1] == plainText[i + 1])
+                            i++;
+                        for(int j = i+2;j < plainText.Length;j++)
                         {
-                            flag = false;
-                            break;
+                            if(cipherText[1] == plainText[j])
+                            {
+                                col = j-i;
+                                row = (int)Math.Round((Convert.ToDouble(plainText.Length) / Convert.ToDouble(col)));
+                                found = 1;
+                                break;
+                            }
                         }
                     }
-                    if (flag)
-                    {
-                        key.Insert(i, j);
-                    }
-                    
+                    if (found == 1)
+                        break;
                 }
             }
-            return key;
+            for(int i = 0;i < row;i++)
+            {
+                List<char> rowMat = new List<char>();
+                for (int j = 0; j < col; j++)
+                {
+                    if (counter >= plainText.Length)
+                    {
+                        rowMat.Add('x');
+                        continue;
+                    }
+                    rowMat.Add(plainText[counter++]);
+                }
+                keyMatrix.Add(rowMat);
+            }
+            int[] key = new int[col];
+            for (int i = 0;i < cipherText.Length - 1;i+=row)
+            {
+                for(int j = 0;j < col;j++)
+                {
+                    if (cipherText[i] == keyMatrix[0][j] && cipherText[i + 1] == keyMatrix[1][j])
+                    {
+                        key[j] = counter2;
+                        break;
+                    }
+                }
+                counter2++;
+            }
+            return key.ToList<int>();
         }
 
         public string Decrypt(string cipherText, List<int> key)

@@ -20,7 +20,6 @@ E:\My Study\Study 4th Year\Second Semster\Computer security\SecurityPackage\Secu
 E:\My Study\Study 4th Year\Second Semster\Computer security\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.AssemblyReference.cache
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\bin\Debug\SecurityLibrary.dll
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\bin\Debug\SecurityLibrary.pdb
-E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csprojAssemblyReference.cache
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
@@ -36,3 +35,4 @@ D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\Sec
 D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
 D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
+E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csprojAssemblyReference.cache
