@@ -267,7 +267,7 @@ namespace SecurityPackageTest
         public void HillCipherError3()
         {
             HillCipher algorithm = new HillCipher();
-
+            
             List<int> key2 = algorithm.Decrypt(plain, keyError);
         }
 
