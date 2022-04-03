@@ -55,7 +55,6 @@ namespace SecurityLibrary
             for (int i = 0; i < cipherText.Length; i++)
                 plainText += char.ConvertFromUtf32(vigTable[newKey[i] % 65].IndexOf(cipherText[i]) + 65)[0];
             return plainText;
-            //throw new NotImplementedException();
         }
 
         public string Encrypt(string plainText, string key)
@@ -69,7 +68,6 @@ namespace SecurityLibrary
             for (int i = 0; i < plainText.Length; i++)
                 cipherText += vigTable[plainText[i] % 65][newKey[i] % 65];
             return cipherText;
-            //throw new NotImplementedException();
         }
     }
 }

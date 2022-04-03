@@ -10,7 +10,6 @@ namespace SecurityLibrary
     {
         public string Analyse(string plainText, string cipherText)
         {
-            //throw new NotImplementedException();
             cipherText=cipherText.ToLower();
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             int founder = 0;
@@ -39,7 +38,6 @@ namespace SecurityLibrary
                 }
                 if (!found)
                 {
-                    //key[i]=alphabet[i]
                     if (key[i]!=0)
                     {
                         for (int j = 0; j < key.Length; j++)
@@ -53,9 +51,7 @@ namespace SecurityLibrary
                         key[founder] = alphabet[i];
                     }
                     else
-                    {
                         key[i] = alphabet[i];
-                    }
                 }
                 found = false;
             }
@@ -65,29 +61,23 @@ namespace SecurityLibrary
 
         public string Decrypt(string cipherText, string key)
         {
-            //throw new NotImplementedException();
             cipherText = cipherText.ToUpper();
             key = key.ToUpper();
             string plainText = "";
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             for (int i = 0; i < cipherText.Length; i++)
-            {
                 plainText += alphabet[key.IndexOf(cipherText[i])];
-            }
             return plainText;
         }
 
         public string Encrypt(string plainText, string key)
         {
-            //throw new NotImplementedException();
             plainText = plainText.ToLower();
             key = key.ToUpper();
             string cipherText = "";
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             for (int i = 0; i < plainText.Length; i++)
-            {
                 cipherText += key[alphabet.IndexOf(plainText[i])];
-            }
             return cipherText;
         }
 
@@ -134,34 +124,21 @@ namespace SecurityLibrary
             for (int i = 0; i < alphabet.Length; i++)
             {
                 for (int j = 0; j < cipher.Length; j++)
-                {
                     if (alphabet[i] == cipher[j])
-                    {
                         counter++;
-                    }
-                }
                 sortedFrequency[i] = (counter / cipher.Length) * 100;
                 counter = 0;
             }
             for (int i = 0; i < sortedFrequency.Length; i++)
-            {
                 freqNumberAndLetter.Add(new Tuple<char, double>(alphabet[i], sortedFrequency[i]));
-            }
             var sortedFreqNumberAndLetter = freqNumberAndLetter.OrderByDescending(t => t.Item2).ToList();
             for (int i = 0; i < sortedFreqNumberAndLetter.Count; i++)
-            {
                 for (int j = 0; j < cipher.Length; j++)
-                {
                     if (sortedFreqNumberAndLetter[i].Item1 == cipher[j])
-                    {
                         plainText[j] = freqLetters[i];
-                    }
-                }
-            }
             string plainTextStr = new string(plainText);
             plainTextStr = plainTextStr.ToUpper();
             return plainTextStr;
-
         }
     }
 }

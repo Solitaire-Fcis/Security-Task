@@ -11,7 +11,6 @@ namespace SecurityLibrary
     /// </summary>
     public class HillCipher : ICryptographicTechnique<List<int>, List<int>>
     {
-
         private List<int> ConvertMatrixToList(int[,] matrix)
         {
             List<int> list = new List<int>();
@@ -52,9 +51,7 @@ namespace SecurityLibrary
                 }
             }
             else
-            {
                 keyMatrix = new int[3, 2];
-            }
             return keyMatrix;
         }
 
@@ -147,10 +144,7 @@ namespace SecurityLibrary
 
             if (key.Count < 4)
                 throw new InvalidAnlysisException();
-
             return key;
-
-
         }
 
         public List<int> Decrypt(List<int> cipherText, List<int> key)
@@ -160,14 +154,11 @@ namespace SecurityLibrary
             int det = this.Mod(this.Determinent(keyMatrix), 26);
             int[,] keyMatrixInverse = new int[keyMatrix.GetLength(0), keyMatrix.GetLength(1)];
             List<int> keyInverse = new List<int>();
-
             if (keyMatrix.GetLength(0) != keyMatrix.GetLength(1))
                 throw new System.Exception();
-
             if (keyMatrix.GetLength(0) == 3)
             {
                 int b = this.FindB(det);
-
                 for (int i = 0; i < keyMatrix.GetLength(0); i++)
                 {
                     for (int j = 0; j < keyMatrix.GetLength(1); j++)
@@ -178,39 +169,22 @@ namespace SecurityLibrary
                         keyMatrixInverse[i, j] = this.Mod(keyMatrixInverse[i, j], 26);
                     }
                 }
-
                 keyInverse = this.ConvertMatrixToList(keyMatrixInverse);
-
                 for (int k = 0; k < cipherText.Count; k += 3)
-                {
                     for (int i = 0; i < keyInverse.Count; i += 3)
-                    {
                         plainText.Add(((keyInverse[i] * cipherText[k]) + (keyInverse[i + 1] * cipherText[k + 1]) + (keyInverse[i + 2] * cipherText[k + 2])) % 26);
-                    }
-                }
             }
             else if (keyMatrix.GetLength(0) == 2)
             {
                 det = this.Determinent(keyMatrix);
                 int[,] flipMatrix = this.flip2x2Matrix(keyMatrix);
                 for (int i = 0; i < keyMatrixInverse.GetLength(0); i++)
-                {
                     for (int j = 0; j < keyMatrixInverse.GetLength(1); j++)
-                    {
-                        keyMatrixInverse[i, j] = (1 / det) * flipMatrix[i, j];
-                        keyMatrixInverse[i, j] = this.Mod(keyMatrixInverse[i, j], 26);
-                    }
-                }
-
+                        keyMatrixInverse[i, j] = this.Mod(((1 / det) * flipMatrix[i, j]), 26);
                 keyInverse = this.ConvertMatrixToList(keyMatrixInverse);
-
                 for (int k = 0; k < cipherText.Count; k += 2)
-                {
                     for (int i = 0; i < keyInverse.Count; i += 2)
-                    {
                         plainText.Add(((keyInverse[i] * cipherText[k]) + (keyInverse[i + 1] * cipherText[k + 1])) % 26);
-                    }
-                }
             }
             if (plainText.FindAll(s => s.Equals(0)).Count == plainText.Count)
                 throw new System.Exception();
@@ -223,35 +197,20 @@ namespace SecurityLibrary
             List<int> cipherText = new List<int>();
             
             if (key.Count % 2 == 0)
-            {
                 for (int k = 0; k < plainText.Count; k+=2)
-                {
                     for (int i = 0; i < key.Count; i+=2)
-                    {
                         cipherText.Add( ( ( key[i] * plainText[k] ) + ( key[i + 1] * plainText[k + 1] ) ) % 26 );
-                    }
-                }
-            }
             else if (key.Count % 3 == 0)
-            {
                 for (int k = 0; k < plainText.Count; k += 3)
-                {
                     for (int i = 0; i < key.Count; i += 3)
-                    {
                         cipherText.Add(((key[i] * plainText[k]) + (key[i + 1] * plainText[k + 1]) + (key[i+2] * plainText[k+2]) ) % 26);
-                    }
-                }
-            }
-
             return cipherText;
-
         }
 
 
         public List<int> Analyse3By3Key(List<int> plainText, List<int> cipherText)
         {
             List<int> key = new List<int>();
-
             for (int index = 0, count = 3; index<3; index++, count+=3)
             {
                 for (int result1 = 0; result1 < 26; result1++)
@@ -278,9 +237,6 @@ namespace SecurityLibrary
                 }
             }
             return key;
-
-
         }
-
     }
 }

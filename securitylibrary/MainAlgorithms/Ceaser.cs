@@ -9,10 +9,8 @@ namespace SecurityLibrary
 
     public class Ceaser : ICryptographicTechnique<string, int>
     {
-        
         public string Encrypt(string plainText, int key)
         {
-            //throw new NotImplementedException();
             int C_T_index = 0;
             string C_T = "";
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -33,7 +31,6 @@ namespace SecurityLibrary
 
         public string Decrypt(string cipherText, int key)
         {
-            //throw new NotImplementedException();
             string P_T = ""; int P_T_index = 0;
             string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             for (int i = 0; i < cipherText.Length; i++)
@@ -47,9 +44,7 @@ namespace SecurityLibrary
                     }
                 }
                 if (P_T_index < 0)
-                {
                     P_T_index += alphabet.Length;
-                }
                 P_T += alphabet[P_T_index].ToString().ToLower();
             }
             return P_T;
@@ -57,26 +52,19 @@ namespace SecurityLibrary
 
         public int Analyse(string plainText, string cipherText)
         {
-            //throw new NotImplementedException();
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             int key, P_T_index=0, C_T_index=0;
             cipherText = cipherText.ToLower();
             for (int i = 0; i < alphabet.Length; i++)
             {
                 if (plainText[0]==alphabet[i])
-                {
                     P_T_index = i;
-                }
                 if (cipherText[0]==alphabet[i])
-                {
                     C_T_index = i;
-                }
             }
             key = C_T_index - P_T_index;
             if (key<0)
-            {
                 key += alphabet.Length;
-            }
             return key;
         }
     }

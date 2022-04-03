@@ -88,7 +88,6 @@ namespace SecurityLibrary
             arr_size = Math.Ceiling(arr_size);
             size = (int)arr_size;
             char[,] pt = new char[(int)size, coulmns];
-
             int current_row = 0;
             int current_coulmn = 0;
             for (int i = 0; i < cipherText.Length; i++)
@@ -98,13 +97,9 @@ namespace SecurityLibrary
                 {
                     current_row = 0;
                     current_coulmn++;
-
                 }
-
                 else
-                {
                     current_row++;
-                }
             }
             for (int i = 0; i < (int)size; i++)
             {
@@ -116,7 +111,6 @@ namespace SecurityLibrary
             }
             for (int i = 0; i < (int)size; i++)
             {
-                
                 for (int j = 0; j < (int)coulmns; j++)
                 {
                     int col = key.ElementAt(j);
@@ -134,7 +128,6 @@ namespace SecurityLibrary
             arr_size = Math.Ceiling(arr_size);
             size = (int)arr_size;
             char[,] pt = new char[(int)size, coulmns];
-            
             int current_row = 0;
             int current_coulmn = 0;
             for (int i = 0; i < plainText.Length; i++)
@@ -144,13 +137,9 @@ namespace SecurityLibrary
                 {
                     current_coulmn = 0;
                     current_row++;
-
                 }
-
                 else
-                {
                     current_coulmn++;
-                }
             }
             for (int i = 0; i < (int)size; i++)
             {
@@ -164,9 +153,7 @@ namespace SecurityLibrary
             {
                 int col = key.IndexOf(i + 1);
                 for (int j = 0; j < (int)size; j++)
-                {
                     cipher += pt[j, col];
-                }
             }
             return cipher;
         }
