@@ -21,10 +21,6 @@ namespace SecurityLibrary
                     break;
                 }
             }
-
-            
-            
-         
             return key;
         }
 
@@ -40,24 +36,14 @@ namespace SecurityLibrary
             int current_coulmn = 0;
             for (int i = 0; i < cipherText.Length; i++)
             {
-
-
-                 pt[current_row, current_coulmn] = cipherText[i];
-
+                pt[current_row, current_coulmn] = cipherText[i];
                 if (current_coulmn == size - 1)
                 {
                     current_coulmn = 0;
                     current_row++;
-
                 }
-
                 else
-                {
                     current_coulmn++;
-                }
-               
-
-
             }
             current_row = 0;
             current_coulmn = 0;
@@ -68,24 +54,16 @@ namespace SecurityLibrary
                 if (current_row == key - 1)
                 {
                     current_row = 0;
-
                     if (current_coulmn == size - 1)
                     {
                         current_coulmn = 0;
                         current_row++;
-
                     }
                     else
-                    {
                         current_coulmn++;
-                    }
                 }
-
                 else
-                {
                     current_row++;
-                }
-                
             }
             plain = plain.ToLower();
             return plain;
@@ -107,48 +85,34 @@ namespace SecurityLibrary
                 if (current_row == key - 1)
                 {
                     current_row = 0;
-                    
-                     if (current_coulmn == size - 1)
+                    if (current_coulmn == size - 1)
                     {
                         current_coulmn = 0;
-                        current_row++;
-                        
+                        current_row++;  
                     }
                     else
-                    {
                         current_coulmn++;
-                    }
-                }
-                
+                }     
                 else 
-                {
                     current_row++;
-                }
-                
-                
             }
             current_row = 0;
             current_coulmn = 0;
-
             for (int i = 0; i < plainText.Length; i++)
-            {if (pt[current_row, current_coulmn] == '\0')
+            {
+                if (pt[current_row, current_coulmn] == '\0')
                 {
                     current_coulmn = 0;
                     current_row++;
                 }
-               cipher+= pt[current_row, current_coulmn];
-                
-                 if (current_coulmn == size - 1)
+                cipher+= pt[current_row, current_coulmn];
+                if (current_coulmn == size - 1)
                 {
                     current_coulmn = 0;
                     current_row++;
-
                 }
-                
                 else
-                {
                     current_coulmn++;
-                }
             }
             cipher = cipher.ToUpper();
             return cipher;

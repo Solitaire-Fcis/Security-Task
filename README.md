@@ -6,6 +6,6 @@
 - [x] Monoalphabetic cipher
 - [x] Playfair cipher
 - [x] Coulmnar cipher
-- [ ] HillCipher
+- [x] HillCipher
 - [x] RailFence cipher
-- [ ] Vignere cipher
+- [x] Vignere cipher
