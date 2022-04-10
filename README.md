@@ -9,3 +9,5 @@
 - [x] HillCipher
 - [x] RailFence cipher
 - [x] Vignere cipher
+- [ ] AES
+- [ ] DES
