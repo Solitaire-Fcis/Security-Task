@@ -13,8 +13,9 @@ namespace SecurityLibrary.AES
     public class AES : CryptographicTechnique
     {
         public static List<List<byte>> plainBlock = new List<List<byte>>(), cipherBlock = new List<List<byte>>(), keyBlock = new List<List<byte>>(), RconBlock = new List<List<byte>>();
+        public static List<List<List<byte>>> keySchedInfo = new List<List<List<byte>>>();
         public static string Rcon = "0x01020408102040801B36";
-        public byte[,] Sblock =
+        public static byte[,] Sblock =
         {//       0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F
                 {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76}, //0 
                 {0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0}, //1
@@ -54,45 +55,20 @@ namespace SecurityLibrary.AES
         };
         public override string Decrypt(string cipherText, string key)
         {
+            string plainText = "";
             InitAESComps(key, cipherText, "");
-            int wordCounter = 4;
-            List<List<List<byte>>> keySchedInfo = new List<List<List<byte>>>();
-            List<List<byte>> keyRound = keyBlock, tmp = new List<List<byte>>();
-            for(int i = 0;i < 11;i++)
-            {
-                if (i == 0)
-                    keySchedInfo.Add(keyRound);
-                else
-                {
-                    tmp = keyRound;
-                    keyRound = new List<List<byte>>(4);
-                    for (int j = 0; j < 4; j++)
-                        keyRound.Add(new List<byte>{0,0,0,0});
-                    for(int j = 0;j < 4;j++)
-                    {
-                        if(wordCounter%4 == 0)
-                        {
-                            for(int k = 0;k < 4;k++)
-                            {
-                                byte sblockRes = this.Sblock[(tmp[(k + 1) % 4][3] >> 4), (tmp[(k + 1) % 4][3] & 0x0F)];
-                                keyRound[k][j] = (byte)(sblockRes ^ tmp[k][j] ^ RconBlock[k][i - 1]);
-                            }
-                        }   
-                        else
-                            for (int k = 0; k < 4; k++)
-                                keyRound[k][j] = (byte)(tmp[k][j] ^ keyRound[k][j - 1]);
-                        wordCounter++;
-                    }
-                    keySchedInfo.Add(keyRound);
-                }
-            }
-            return cipherText;
+            KeyScheduler();
+            // Decryption Algorithm Starts Here
+            return plainText;
         }
 
         public override string Encrypt(string plainText, string key)
         {
-            //throw new NotImplementedException();
-            return "";
+            string cipherText = "";
+            InitAESComps(key, plainText, "");
+            KeyScheduler();
+            // Encryption Algorithm Starts Here
+            return cipherText;
         }
 
         public static byte[] StringToByteArray(string text)
@@ -108,7 +84,7 @@ namespace SecurityLibrary.AES
             Rcon = Rcon.Remove(0, 2);
             key = key.Remove(0, 2);
             List<byte> keyTextBs = StringToByteArray(key).ToList(), RconBs = StringToByteArray(Rcon).ToList();
-            // Decryption
+            // Decryption Mode
             if (plainText == "")
             {
                 cipherText = cipherText.Remove(0, 2);
@@ -127,7 +103,7 @@ namespace SecurityLibrary.AES
                     keyBlock.Add(keyRow);
                 }
             }
-            // Encryption
+            // Encryption Mode
             else if(cipherText == "")
             {
                 plainText = plainText.Remove(0, 2);
@@ -157,6 +133,39 @@ namespace SecurityLibrary.AES
                         RconRow.Add((byte)0);
                 }
                 RconBlock.Add(RconRow);
+            }
+        }
+        public static void KeyScheduler()
+        {
+            int wordCounter = 4;
+            List<List<byte>> keyRound = keyBlock, tmp = new List<List<byte>>();
+            for (int i = 0; i < 11; i++)
+            {
+                if (i == 0)
+                    keySchedInfo.Add(keyRound);
+                else
+                {
+                    tmp = keyRound;
+                    keyRound = new List<List<byte>>(4);
+                    for (int j = 0; j < 4; j++)
+                        keyRound.Add(new List<byte> { 0, 0, 0, 0 });
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (wordCounter % 4 == 0)
+                        {
+                            for (int k = 0; k < 4; k++)
+                            {
+                                byte sblockRes = Sblock[(tmp[(k + 1) % 4][3] >> 4), (tmp[(k + 1) % 4][3] & 0x0F)];
+                                keyRound[k][j] = (byte)(sblockRes ^ tmp[k][j] ^ RconBlock[k][i - 1]);
+                            }
+                        }
+                        else
+                            for (int k = 0; k < 4; k++)
+                                keyRound[k][j] = (byte)(tmp[k][j] ^ keyRound[k][j - 1]);
+                        wordCounter++;
+                    }
+                    keySchedInfo.Add(keyRound);
+                }
             }
         }
     }
