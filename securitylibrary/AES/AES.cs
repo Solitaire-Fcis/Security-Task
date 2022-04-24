@@ -65,7 +65,7 @@ namespace SecurityLibrary.AES
         public override string Encrypt(string plainText, string key)
         {
             string cipherText = "";
-            InitAESComps(key, plainText, "");
+            InitAESComps(key, "", plainText);
             KeyScheduler();
             // Encryption Algorithm Starts Here
             return cipherText;
