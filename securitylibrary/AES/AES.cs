@@ -12,9 +12,29 @@ namespace SecurityLibrary.AES
     /// </summary>
     public class AES : CryptographicTechnique
     {
-        public static List<List<byte>> plainBlock = new List<List<byte>>(), cipherBlock = new List<List<byte>>(), keyBlock = new List<List<byte>>(), RconBlock = new List<List<byte>>();
+        public static List<List<byte>> plainBlock = new List<List<byte>>(), cipherBlock = new List<List<byte>>(), keyBlock = new List<List<byte>>();
         public static List<List<List<byte>>> keySchedInfo = new List<List<List<byte>>>();
-        public static string Rcon = "0x01020408102040801B36";
+        public static byte[,] InvMixCols =
+        {
+            { 0x0e, 0x0b, 0x0d, 0x09 },
+            { 0x09, 0x0e, 0x0b, 0x0d },
+            { 0x0d, 0x09, 0x0e, 0x0b },
+            { 0x0b, 0x0d, 0x09, 0x0e }
+        };
+        public static byte[,] MixCols =
+        {
+            { 0x02, 0x03, 0x01, 0x01 },
+            { 0x01, 0x02, 0x03, 0x01 },
+            { 0x01, 0x01, 0x02, 0x03 },
+            { 0x03, 0x01, 0x01, 0x02 }
+        };
+        public static byte[,] Rcon =
+        {
+            { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36 },
+            { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+            { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+            { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+        };
         public static byte[,] Sblock =
         {//       0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F
                 {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76}, //0 
@@ -35,31 +55,49 @@ namespace SecurityLibrary.AES
                 {0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16}  //F
         }
         , SblockInverse =
-        {
-                {0x52, 0x09, 0x6A, 0xD5, 0x30, 0x36, 0xA5, 0x38, 0xBF, 0x40, 0xA3, 0x9E, 0x81, 0xF3, 0xD7, 0xFB},
-                {0x7C, 0xE3, 0x39, 0x82, 0x9B, 0x2F, 0xFF, 0x87, 0x34, 0x8E, 0x43, 0x44, 0xC4, 0xDE, 0xE9, 0xCB},
-                {0x54, 0x7B, 0x94, 0x32, 0xA6, 0xC2, 0x23, 0x3D, 0xEE, 0x4C, 0x95, 0x0B, 0x42, 0xFA, 0xC3, 0x4E},
-                {0x08, 0x2E, 0xA1, 0x66, 0x28, 0xD9, 0x24, 0xB2, 0x76, 0x5B, 0xA2, 0x49, 0x6D, 0x8B, 0xD1, 0x25},
-                {0x72, 0xF8, 0xF6, 0x64, 0x86, 0x68, 0x98, 0x16, 0xD4, 0xA4, 0x5C, 0xCC, 0x5D, 0x65, 0xB6, 0x92},
-                {0x6C, 0x70, 0x48, 0x50, 0xFD, 0xED, 0xB9, 0xDA, 0x5E, 0x15, 0x46, 0x57, 0xA7, 0x8D, 0x9D, 0x84},
-                {0x90, 0xD8, 0xAB, 0x00, 0x8C, 0xBC, 0xD3, 0x0A, 0xF7, 0xE4, 0x58, 0x05, 0xB8, 0xB3, 0x45, 0x06},
-                {0xD0, 0x2C, 0x1E, 0x8F, 0xCA, 0x3F, 0x0F, 0x02, 0xC1, 0xAF, 0xBD, 0x03, 0x01, 0x13, 0x8A, 0x6B},
-                {0x3A, 0x91, 0x11, 0x41, 0x4F, 0x67, 0xDC, 0xEA, 0x97, 0xF2, 0xCF, 0xCE, 0xF0, 0xB4, 0xE6, 0x73},
-                {0x96, 0xAC, 0x74, 0x22, 0xE7, 0xAD, 0x35, 0x85, 0xE2, 0xF9, 0x37, 0xE8, 0x1C, 0x75, 0xDF, 0x6E},
-                {0x47, 0xF1, 0x1A, 0x71, 0x1D, 0x29, 0xC5, 0x89, 0x6F, 0xB7, 0x62, 0x0E, 0xAA, 0x18, 0xBE, 0x1B},
-                {0xFC, 0x56, 0x3E, 0x4B, 0xC6, 0xD2, 0x79, 0x20, 0x9A, 0xDB, 0xC0, 0xFE, 0x78, 0xCD, 0x5A, 0xF4},
-                {0x1F, 0xDD, 0xA8, 0x33, 0x88, 0x07, 0xC7, 0x31, 0xB1, 0x12, 0x10, 0x59, 0x27, 0x80, 0xEC, 0x5F},
-                {0x60, 0x51, 0x7F, 0xA9, 0x19, 0xB5, 0x4A, 0x0D, 0x2D, 0xE5, 0x7A, 0x9F, 0x93, 0xC9, 0x9C, 0xEF},
-                {0xA0, 0xE0, 0x3B, 0x4D, 0xAE, 0x2A, 0xF5, 0xB0, 0xC8, 0xEB, 0xBB, 0x3C, 0x83, 0x53, 0x99, 0x61},
-                {0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D}
+        {//       0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F      
+                {0x52, 0x09, 0x6A, 0xD5, 0x30, 0x36, 0xA5, 0x38, 0xBF, 0x40, 0xA3, 0x9E, 0x81, 0xF3, 0xD7, 0xFB}, //0
+                {0x7C, 0xE3, 0x39, 0x82, 0x9B, 0x2F, 0xFF, 0x87, 0x34, 0x8E, 0x43, 0x44, 0xC4, 0xDE, 0xE9, 0xCB}, //1
+                {0x54, 0x7B, 0x94, 0x32, 0xA6, 0xC2, 0x23, 0x3D, 0xEE, 0x4C, 0x95, 0x0B, 0x42, 0xFA, 0xC3, 0x4E}, //2
+                {0x08, 0x2E, 0xA1, 0x66, 0x28, 0xD9, 0x24, 0xB2, 0x76, 0x5B, 0xA2, 0x49, 0x6D, 0x8B, 0xD1, 0x25}, //3
+                {0x72, 0xF8, 0xF6, 0x64, 0x86, 0x68, 0x98, 0x16, 0xD4, 0xA4, 0x5C, 0xCC, 0x5D, 0x65, 0xB6, 0x92}, //4
+                {0x6C, 0x70, 0x48, 0x50, 0xFD, 0xED, 0xB9, 0xDA, 0x5E, 0x15, 0x46, 0x57, 0xA7, 0x8D, 0x9D, 0x84}, //5
+                {0x90, 0xD8, 0xAB, 0x00, 0x8C, 0xBC, 0xD3, 0x0A, 0xF7, 0xE4, 0x58, 0x05, 0xB8, 0xB3, 0x45, 0x06}, //6
+                {0xD0, 0x2C, 0x1E, 0x8F, 0xCA, 0x3F, 0x0F, 0x02, 0xC1, 0xAF, 0xBD, 0x03, 0x01, 0x13, 0x8A, 0x6B}, //7
+                {0x3A, 0x91, 0x11, 0x41, 0x4F, 0x67, 0xDC, 0xEA, 0x97, 0xF2, 0xCF, 0xCE, 0xF0, 0xB4, 0xE6, 0x73}, //8
+                {0x96, 0xAC, 0x74, 0x22, 0xE7, 0xAD, 0x35, 0x85, 0xE2, 0xF9, 0x37, 0xE8, 0x1C, 0x75, 0xDF, 0x6E}, //9
+                {0x47, 0xF1, 0x1A, 0x71, 0x1D, 0x29, 0xC5, 0x89, 0x6F, 0xB7, 0x62, 0x0E, 0xAA, 0x18, 0xBE, 0x1B}, //A
+                {0xFC, 0x56, 0x3E, 0x4B, 0xC6, 0xD2, 0x79, 0x20, 0x9A, 0xDB, 0xC0, 0xFE, 0x78, 0xCD, 0x5A, 0xF4}, //B
+                {0x1F, 0xDD, 0xA8, 0x33, 0x88, 0x07, 0xC7, 0x31, 0xB1, 0x12, 0x10, 0x59, 0x27, 0x80, 0xEC, 0x5F}, //C
+                {0x60, 0x51, 0x7F, 0xA9, 0x19, 0xB5, 0x4A, 0x0D, 0x2D, 0xE5, 0x7A, 0x9F, 0x93, 0xC9, 0x9C, 0xEF}, //D
+                {0xA0, 0xE0, 0x3B, 0x4D, 0xAE, 0x2A, 0xF5, 0xB0, 0xC8, 0xEB, 0xBB, 0x3C, 0x83, 0x53, 0x99, 0x61}, //E
+                {0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D}  //F
         };
         public override string Decrypt(string cipherText, string key)
         {
-            string plainText = "";
+            string plainText = "0x";
+
             InitAESComps(key, cipherText, "");
             KeyScheduler();
+
             // Decryption Algorithm Starts Here
-            return plainText;
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    cipherBlock[i][j] = (byte)(cipherBlock[i][j] ^ keySchedInfo[10][i][j]);
+            for (int i = 9; i >= 0; i--)
+            {
+                InverseShiftRows();
+                InverseSubBytes();
+                for (int j = 0; j < 4; j++)
+                    for (int k = 0; k < 4; k++)
+                        cipherBlock[j][k] = (byte)(cipherBlock[j][k] ^ keySchedInfo[i][j][k]);
+                if(i != 0)
+                    InverseMixCols();
+            }
+            for(int i = 0;i < 4;i++)
+                for(int j = 0; j < 4; j++)
+                    plainText += BitConverter.ToString(new[] { cipherBlock[j][i] }).Replace("-", "");
+            return plainText.ToLower();
         }
 
         public override string Encrypt(string plainText, string key)
@@ -81,9 +119,19 @@ namespace SecurityLibrary.AES
         
         public static void InitAESComps(string key, string cipherText, string plainText)
         {
-            Rcon = Rcon.Remove(0, 2);
+            keyBlock = new List<List<byte>>();
+            cipherBlock = new List<List<byte>>();
+            plainBlock = new List<List<byte>>();
+            for(int i = 0;i < 4;i++)
+            {
+                keyBlock.Add(new List<byte> { 0x00, 0x00, 0x00, 0x00 });
+                cipherBlock.Add(new List<byte> { 0x00, 0x00, 0x00, 0x00 });
+                plainBlock.Add(new List<byte> { 0x00, 0x00, 0x00, 0x00 });
+            }
+            
             key = key.Remove(0, 2);
-            List<byte> keyTextBs = StringToByteArray(key).ToList(), RconBs = StringToByteArray(Rcon).ToList();
+            List<byte> keyTextBs = StringToByteArray(key).ToList();
+
             // Decryption Mode
             if (plainText == "")
             {
@@ -92,15 +140,12 @@ namespace SecurityLibrary.AES
                 int counter = 0;
                 for (int i = 0; i < 4; i++)
                 {
-                    List<byte> keyRow = new List<byte>(), cipherRow = new List<byte>();
                     for (int j = 0; j < 4; j++)
                     {
-                        keyRow.Add((byte)keyTextBs[counter]);
-                        cipherRow.Add((byte)cipherTextBs[counter]);
+                        keyBlock[j][i] = keyTextBs[counter];
+                        cipherBlock[j][i] = cipherTextBs[counter];
                         counter++;
                     }
-                    cipherBlock.Add(cipherRow);
-                    keyBlock.Add(keyRow);
                 }
             }
             // Encryption Mode
@@ -111,28 +156,13 @@ namespace SecurityLibrary.AES
                 int counter = 0;
                 for (int i = 0; i < 4; i++)
                 {
-                    List<byte> keyRow = new List<byte>(), plainRow = new List<byte>();
                     for (int j = 0; j < 4; j++)
                     {
-                        keyRow.Add((byte)keyTextBs[counter]);
-                        plainRow.Add((byte)plainTextBs[counter]);
+                        keyBlock[j][i] = keyTextBs[counter];
+                        plainBlock[j][i] = plainTextBs[counter];
                         counter++;
                     }
-                    cipherBlock.Add(plainRow);
-                    keyBlock.Add(keyRow);
                 }
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                List<byte> RconRow = new List<byte>();
-                for (int j = 0; j < 10; j++)
-                {
-                    if (i == 0)
-                        RconRow.Add((byte)RconBs[j]);
-                    else
-                        RconRow.Add((byte)0);
-                }
-                RconBlock.Add(RconRow);
             }
         }
         public static void KeyScheduler()
@@ -156,7 +186,7 @@ namespace SecurityLibrary.AES
                             for (int k = 0; k < 4; k++)
                             {
                                 byte sblockRes = Sblock[(tmp[(k + 1) % 4][3] >> 4), (tmp[(k + 1) % 4][3] & 0x0F)];
-                                keyRound[k][j] = (byte)(sblockRes ^ tmp[k][j] ^ RconBlock[k][i - 1]);
+                                keyRound[k][j] = (byte)(sblockRes ^ tmp[k][j] ^ Rcon[k,i - 1]);
                             }
                         }
                         else
@@ -167,6 +197,81 @@ namespace SecurityLibrary.AES
                     keySchedInfo.Add(keyRound);
                 }
             }
+        }
+        public static void InverseShiftRows()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == 0)
+                    continue;
+                byte[] tmpRow = new byte[4];
+                for(int j = 0; j < 4; j++)
+                    tmpRow[j] = cipherBlock[i][j];
+                for(int j = 0; j < 4; j++)
+                    cipherBlock[i][j] = tmpRow[(j + (4 - i)) % 4];
+            }
+        }
+        public static void AddRoundKey(int round)
+        {
+            for(int i = 0;i < 4;i++)
+                for (int j = 0; j < 4; j++)
+                    cipherBlock[i][j] = (byte)(cipherBlock[i][j] ^ keySchedInfo[round][i][j]);
+        }
+        public static void InverseSubBytes()
+        {
+            for(int i = 0; i < 4; i++)
+                for(int j = 0; j < 4; j++)
+                    cipherBlock[i][j] = SblockInverse[(cipherBlock[i][j] >> 4), (cipherBlock[i][j] & 0x0F)];
+        }
+        public static void InverseMixCols()
+        {
+            List<List<byte>> tmp = new List<List<byte>>();
+            for (int i = 0; i < 4; i++)
+                tmp.Add(new List<byte> { 0x00, 0x00, 0x00, 0x00 });
+            for(int i = 0;i < 4;i++)
+                for (int j = 0; j < 4; j++)
+                    tmp[i][j] = cipherBlock[i][j];
+            for(int i = 0;i < 4;i++)
+            {
+                cipherBlock[0][i] = (byte)(InverseMixColsMulti_E(tmp[0][i]) ^ InverseMixColsMulti_B(tmp[1][i])
+                    ^ InverseMixColsMulti_D(tmp[2][i]) ^ InverseMixColsMulti_9(tmp[3][i]));
+                cipherBlock[1][i] = (byte)(InverseMixColsMulti_9(tmp[0][i]) ^ InverseMixColsMulti_E(tmp[1][i])
+                    ^ InverseMixColsMulti_B(tmp[2][i]) ^ InverseMixColsMulti_D(tmp[3][i]));
+                cipherBlock[2][i] = (byte)(InverseMixColsMulti_D(tmp[0][i]) ^ InverseMixColsMulti_9(tmp[1][i])
+                    ^ InverseMixColsMulti_E(tmp[2][i]) ^ InverseMixColsMulti_B(tmp[3][i]));
+                cipherBlock[3][i] = (byte)(InverseMixColsMulti_B(tmp[0][i]) ^ InverseMixColsMulti_D(tmp[1][i])
+                    ^ InverseMixColsMulti_9(tmp[2][i]) ^ InverseMixColsMulti_E(tmp[3][i]));
+            }
+        }
+        public static byte InverseMixColsMulti_E(byte tmp)
+        {
+            return (byte)(InverseMixColsMulti_2(InverseMixColsMulti_2(InverseMixColsMulti_2(tmp)))
+                            ^ InverseMixColsMulti_2(InverseMixColsMulti_2(tmp))
+                            ^ InverseMixColsMulti_2(tmp));
+        }
+        public static byte InverseMixColsMulti_D(byte tmp)
+        {
+            return (byte)(InverseMixColsMulti_2(InverseMixColsMulti_2(InverseMixColsMulti_2(tmp)))
+                            ^ InverseMixColsMulti_2(InverseMixColsMulti_2(tmp))
+                            ^ tmp);
+        }
+        public static byte InverseMixColsMulti_B(byte tmp)
+        {
+            return (byte)(InverseMixColsMulti_2(InverseMixColsMulti_2(InverseMixColsMulti_2(tmp)))
+                            ^ InverseMixColsMulti_2(tmp)
+                            ^ tmp);
+        }
+        public static byte InverseMixColsMulti_9(byte tmp)
+        {
+            return (byte)(InverseMixColsMulti_2(InverseMixColsMulti_2(InverseMixColsMulti_2(tmp)))
+                            ^ tmp);
+        }
+        public static byte InverseMixColsMulti_2(byte cipherCell)
+        {
+            if (cipherCell >> 7 == 0x01)
+                return (byte)(cipherCell << 1);
+            else
+                return (byte)((cipherCell << 1) ^ (0x1B));
         }
     }
 }
