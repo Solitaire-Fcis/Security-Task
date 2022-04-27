@@ -36,3 +36,9 @@ D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\Sec
 D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 D:\University\4th\2nd semester\Tasks\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
 E:\Work\FCIS\4th Year\CS\2nd Term\Computer Security\SecTask\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csprojAssemblyReference.cache
+C:\Users\AnTaR\Desktop\Security-Task\SecurityLibrary\bin\Debug\SecurityLibrary.dll
+C:\Users\AnTaR\Desktop\Security-Task\SecurityLibrary\bin\Debug\SecurityLibrary.pdb
+C:\Users\AnTaR\Desktop\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.AssemblyReference.cache
+C:\Users\AnTaR\Desktop\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
+C:\Users\AnTaR\Desktop\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.dll
+C:\Users\AnTaR\Desktop\Security-Task\SecurityLibrary\obj\Debug\SecurityLibrary.pdb

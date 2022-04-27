@@ -12,7 +12,7 @@ namespace SecurityLibrary.AES
     /// </summary>
     public class AES : CryptographicTechnique
     {
-        public static List<List<byte>> plainBlock = new List<List<byte>>(), cipherBlock = new List<List<byte>>(), keyBlock = new List<List<byte>>();
+        public static List<List<byte>> plainBlock = new List<List<byte>>(), cipherBlock = new List<List<byte>>(), keyBlock = new List<List<byte>>(), operationsBlock = new List<List<byte>>(),returnedFromMixColumns=new List<List<byte>>();
         public static List<List<List<byte>>> keySchedInfo = new List<List<List<byte>>>();
         public static byte[,] InvMixCols =
         {
@@ -102,10 +102,19 @@ namespace SecurityLibrary.AES
 
         public override string Encrypt(string plainText, string key)
         {
-            string cipherText = "";
+            string cipherText = "0x";
             InitAESComps(key, "", plainText);
             KeyScheduler();
             // Encryption Algorithm Starts Here
+            initialAddRoundKey(plainBlock, keySchedInfo[0]);
+            makeOperations(keySchedInfo);
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    cipherText += BitConverter.ToString(new[] { operationsBlock[j][i] }).Replace("-", "");
+                }
+            }
             return cipherText;
         }
 
@@ -154,6 +163,7 @@ namespace SecurityLibrary.AES
                 plainText = plainText.Remove(0, 2);
                 List<byte> plainTextBs = StringToByteArray(plainText).ToList();
                 int counter = 0;
+                
                 for (int i = 0; i < 4; i++)
                 {
                     for (int j = 0; j < 4; j++)
@@ -197,6 +207,110 @@ namespace SecurityLibrary.AES
                     keySchedInfo.Add(keyRound);
                 }
             }
+        }
+        public static void initialAddRoundKey(List<List<byte>> plain, List<List<byte>> initialKey)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                operationsBlock.Add(new List<byte> { 0, 0, 0, 0 });
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    operationsBlock[j][i] = (byte)(plain[j][i] ^ initialKey[j][i]);
+                }
+            }
+        }
+        public static void makeOperations(List<List<List<byte>>> roundKey)
+        {
+            for (int i = 1; i < 10; i++)
+            {
+                subBytes(operationsBlock);
+                shiftRows(operationsBlock);
+                mixColumns(operationsBlock);
+                addRoundKey(operationsBlock, roundKey[i]);
+            }
+            subBytes(operationsBlock);
+            shiftRows(operationsBlock);
+            addRoundKey(operationsBlock, roundKey[10]);
+        }
+        public static void subBytes(List<List<byte>> operationsMatrix)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    int x = (operationsMatrix[i][j] >> 4);
+                    int y = (operationsMatrix[i][j] & 0x0F);
+                    byte sBlockSub = Sblock[x, y];
+                    operationsMatrix[i][j] = sBlockSub;
+                }
+            }
+            operationsBlock = operationsMatrix;
+        }
+        public static void shiftRows(List<List<byte>> operationsMatrix)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == 0)
+                {
+                    continue;
+                }
+                byte[] tmpRow = new byte[4];
+                for (int j = 0; j < 4; j++)
+                {
+                    tmpRow[j] = operationsMatrix[i][j];
+                }
+                for (int j = 0; j < 4; j++)
+                {
+                    operationsMatrix[i][j] = tmpRow[(j + (4 + i)) % 4];
+                }
+            }
+            operationsBlock = operationsMatrix;
+        }
+        public static void mixColumns(List<List<byte>> operationsMatrix)
+        {
+            returnedFromMixColumns = new List<List<byte>>();
+            for (int i = 0; i < 4; i++)
+            {
+                returnedFromMixColumns.Add(new List<byte> { 0, 0, 0, 0 });
+            }
+            byte[] elements = new byte[] { 0, 0, 0, 0 };
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    for (int k = 0; k < 4; k++)
+                    {
+                        if (MixCols[i, k] == 0x02)
+                        {
+                            elements[k] = MixColsMulti_2(operationsMatrix[k][j]);
+                        }
+                        else if (MixCols[i, k] == 0x03)
+                        {
+                            elements[k] = MixColsMulti_3(operationsMatrix[k][j]);
+                        }
+                        else
+                        {
+                            elements[k] = operationsMatrix[k][j];
+                        }
+                    }
+                    returnedFromMixColumns[i][j] = (byte)(elements[0] ^ elements[1] ^ elements[2] ^ elements[3]);
+                }
+            }
+            operationsBlock = returnedFromMixColumns;
+        }
+        public static void addRoundKey(List<List<byte>> operationsMatrix, List<List<byte>> roundKey)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    operationsMatrix[i][j] = (byte)(operationsMatrix[i][j] ^ roundKey[i][j]);
+                }
+            }
+            operationsBlock = operationsMatrix;
         }
         public static void InverseShiftRows()
         {
@@ -272,6 +386,17 @@ namespace SecurityLibrary.AES
                 return (byte)(cipherCell << 1);
             else
                 return (byte)((cipherCell << 1) ^ (0x1B));
+        }
+        public static byte MixColsMulti_3(byte cipherCell)
+        {
+            return (byte)(cipherCell ^ MixColsMulti_2(cipherCell));
+        }
+        public static byte MixColsMulti_2(byte cipherCell)
+        {
+            if (cipherCell >> 7 == 0x01)
+                return (byte)((cipherCell << 1) ^ (0x1B));
+            else
+                return (byte)(cipherCell << 1);
         }
     }
 }
