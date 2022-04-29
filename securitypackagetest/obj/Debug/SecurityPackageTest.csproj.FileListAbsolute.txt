@@ -71,3 +71,12 @@ C:\Users\AnTaR\Desktop\Security-Task\SecurityPackageTest\obj\Debug\SecurityPacka
 C:\Users\AnTaR\Desktop\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.CopyComplete
 C:\Users\AnTaR\Desktop\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.dll
 C:\Users\AnTaR\Desktop\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.pdb
+E:\My Study\Security-Task\SecurityPackageTest\bin\Debug\SecurityPackageTest.dll
+E:\My Study\Security-Task\SecurityPackageTest\bin\Debug\SecurityPackageTest.pdb
+E:\My Study\Security-Task\SecurityPackageTest\bin\Debug\SecurityLibrary.dll
+E:\My Study\Security-Task\SecurityPackageTest\bin\Debug\SecurityLibrary.pdb
+E:\My Study\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.AssemblyReference.cache
+E:\My Study\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.CoreCompileInputs.cache
+E:\My Study\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.CopyComplete
+E:\My Study\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.dll
+E:\My Study\Security-Task\SecurityPackageTest\obj\Debug\SecurityPackageTest.pdb
