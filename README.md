@@ -10,7 +10,7 @@
 - [x] RailFence cipher
 - [x] Vignere cipher
 - [x] AES Cipher
-- [x] ٌٍRSA Cipher
+- [x] RSA Cipher
 - [ ] RC4 Cipher
-- [ ] Diffie-Hellman Key Exchange
-- [ ] ElGamal Cipher
+- [x] Diffie-Hellman Key Exchange
+- [x] ElGamal Cipher

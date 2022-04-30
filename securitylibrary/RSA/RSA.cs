@@ -117,17 +117,6 @@ namespace SecurityLibrary.RSA
             else
                 return inverse;
         }
-        public static int GetGcd(int number1,int number2)
-        {
-            int rem = 0;
-            while (number2>0)
-            {
-                rem = number1 % number2;
-                number1 = number2;
-                number2 = rem;
-            }
-            return number1;
-        }
         public static int Getsummations(int n)
         {
             double divide=999;
