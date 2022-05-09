@@ -71,5 +71,6 @@ namespace SecurityPackageTest
             int plain = algorithm.Decrypt(257, 337, 12448, 17);
             Assert.AreEqual(plain, 18537);
         }
+
     }
 }

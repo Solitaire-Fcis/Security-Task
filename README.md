@@ -11,6 +11,6 @@
 - [x] Vignere cipher
 - [x] AES Cipher
 - [x] RSA Cipher
-- [ ] RC4 Cipher
+- [x] RC4 Cipher
 - [x] Diffie-Hellman Key Exchange
 - [x] ElGamal Cipher
